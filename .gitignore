@@ -3,6 +3,4 @@
 .RData
 .Ruserdata
 
-# Ignore pipeline data files
-*/out/*
 _targets/*
