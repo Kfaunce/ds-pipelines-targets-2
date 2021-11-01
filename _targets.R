@@ -1,5 +1,6 @@
 library(targets)
 source("1_fetch/src/get_nwis_data.R")
+source("2_process/src/bind_data.R")
 source("2_process/src/process_and_style.R")
 source("3_visualize/src/plot_timeseries.R")
 
@@ -52,9 +53,18 @@ p1_targets_list <- list(
       site_data,
       "nwisdata", # specify which files to combine, filename search string
       "2_process/out/all_nwisdata.csv" # file outpath
-    )
-  ),
+    ),
   format = "file"
+  ),
+  tar_target(
+    compiled_site_info,
+    bind_data(
+      site_data,
+      "nwisdata", # specify which files to combine, filename search string
+      "2_process/out/all_siteinfo.csv" # file outpath
+    ),
+    format = "file"
+  )
 )
 
 

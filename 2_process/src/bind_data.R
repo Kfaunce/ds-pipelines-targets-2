@@ -6,7 +6,7 @@ bind_data <- function(eval_data, search_string, file_outpath) {
     ldf <- lapply(filenames, readr::read_csv)
     combined_df <- do.call(rbind, ldf)
     
-    readr::write_csv(file_outpath)
+    readr::write_csv(combined_df, file_outpath)
     
     return(file_outpath)
   
