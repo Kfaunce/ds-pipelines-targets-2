@@ -11,7 +11,7 @@ download_nwis_data <- function(site_num, out_dir, startDate, endDate, parameterC
     # download site info
       val <- retry(download_nwis_site_info(site_num, out_dir), maxErrors = 10, sleep = 2)
         
-      return(out_dir)
+      return(paste0(out_dir, "nwis_", site_num, "_nwisdata.csv"))
   
 }
 

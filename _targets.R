@@ -35,22 +35,56 @@ if(!dir.exists('3_visualize/out/'))
 # Download site data and compile files
 p1_targets_list <- list(
   tar_target(
-    site_data,
-      for (site_num in site_list) {
-        download_nwis_data(
-          site_num,
-          "1_fetch/out/", # out directory
-          startDate,
-          endDate,
-          parameterCd
-        )
-      },
+    site_1_data,
+    download_nwis_data(
+      site_list[1],
+      "1_fetch/out/", # out directory
+      startDate,
+      endDate,
+      parameterCd
+    ),
+  format = "file"
+  ),
+  tar_target(
+    site_2_data,
+    download_nwis_data(
+      site_list[2],
+      "1_fetch/out/", # out directory
+      startDate,
+      endDate,
+      parameterCd
+    ),
+    format = "file"
+  ),
+  tar_target(
+    site_3_data,
+    download_nwis_data(
+      site_list[3],
+      "1_fetch/out/", # out directory
+      startDate,
+      endDate,
+      parameterCd
+    ),
+    format = "file"
+  ),
+  tar_target(
+    site_4_data,
+    download_nwis_data(
+      site_list[4],
+      "1_fetch/out/", # out directory
+      startDate,
+      endDate,
+      parameterCd
+    ),
     format = "file"
   ),
   tar_target(
     compiled_nwis_data,
     bind_data(
-      site_data,
+      site_1_data,
+      site_2_data,
+      site_3_data,
+      site_4_data,
       "nwisdata", # specify which files to combine, filename search string
       "2_process/out/all_nwisdata.csv" # file outpath
     ),
@@ -59,8 +93,11 @@ p1_targets_list <- list(
   tar_target(
     compiled_site_info,
     bind_data(
-      site_data,
-      "nwisdata", # specify which files to combine, filename search string
+      site_1_data,
+      site_2_data,
+      site_3_data,
+      site_4_data,
+      "siteinfo", # specify which files to combine, filename search string
       "2_process/out/all_siteinfo.csv" # file outpath
     ),
     format = "file"
@@ -68,28 +105,28 @@ p1_targets_list <- list(
 )
 
 
-#p2_targets_list <- list(
-#  tar_target(
-#    site_data_clean, 
-#    process_data(site_data)
-#  ),
-#  tar_target(
-#    site_data_annotated,
-#    annotate_data(site_data_clean, site_filename = site_info_csv)
-#  ),
-#  tar_target(
-#    site_data_styled,
-#    style_data(site_data_annotated)
-#  )
-#)
+# Clean and format data files
+p2_targets_list <- list(
+  tar_target(
+    site_data_clean, 
+    process_data(
+      compiled_nwis_data,
+      compiled_site_info
+    )
+  )
+)
 
-#p3_targets_list <- list(
-#  tar_target(
-#    figure_1_png,
-#    plot_nwis_timeseries(fileout = "3_visualize/out/figure_1.png", site_data_styled),
-#    format = "file"
-#  )
-#)
+
+p3_targets_list <- list(
+  tar_target(
+    figure_1_png,
+    plot_nwis_timeseries(
+      site_data_clean,
+     "3_visualize/out/figure_1.png" # file outpath
+    ),
+    format = "file"
+  )
+)
 
 # Return the complete list of targets
-c(p1_targets_list)#, p2_targets_list, p3_targets_list)
+c(p1_targets_list, p2_targets_list, p3_targets_list)
