@@ -7,19 +7,7 @@ get_site_info_data <- function(eval_data, file_outpath){
       sites <- unique(nwisdata$site_no) 
   
     # download site info - loop through sites and append to a single dataframe
-      data_out <- data.frame()
-      
-      for (i in sites) {
-        
-        val <- retry(download_nwis_site_info(i), maxErrors = 10, sleep = 2)
-        
-        # initial attempts indicated a need to set these columns as a specific data type for binding
-        val$coord_acy_cd <- as.character(val$coord_acy_cd)
-        val$county_cd <- as.character(val$county_cd)
-        
-        data_out <- dplyr::bind_rows(data_out, val)
-        
-      }
+      data_out <- retry(download_nwis_site_info(i), maxErrors = 10, sleep = 2)
     
       readr::write_csv(data_out, file_outpath)
       
