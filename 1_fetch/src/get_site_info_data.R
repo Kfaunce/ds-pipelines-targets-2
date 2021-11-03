@@ -1,17 +1,11 @@
-get_site_info_data <- function(eval_data, file_outpath){ 
+get_site_info_data <- function(eval_data){ 
   
-  # function to access and download site information based on unique site numbers from 2_process/out/all_nwisdata.csv
-  
-    # get site list
-      nwisdata <- readr::read_csv(eval_data)
-      sites <- unique(nwisdata$site_no) 
+  # function to access and download site information based on unique site numbers
   
     # download site info - loop through sites and append to a single dataframe
-      data_out <- retry(download_nwis_site_info(i), maxErrors = 10, sleep = 2)
-    
-      readr::write_csv(data_out, file_outpath)
+      data_out <- retry(download_nwis_site_info(site_list), maxErrors = 10, sleep = 2)
       
-      return(file_outpath)
+      return(data_out)
   
 }
 
