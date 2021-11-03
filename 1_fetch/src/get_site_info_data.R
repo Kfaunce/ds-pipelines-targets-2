@@ -7,7 +7,7 @@ get_site_info_data <- function(eval_data, file_outpath){
       sites <- unique(nwisdata$site_no) 
   
     # download site info - loop through sites and append to a single dataframe
-      data_out <- retry(download_nwis_site_info(i), maxErrors = 10, sleep = 2)
+      data_out <- retry(download_nwis_site_info(sites), maxErrors = 10, sleep = 2)
     
       readr::write_csv(data_out, file_outpath)
       
