@@ -62,7 +62,8 @@ p1_targets_list <- list(
   tar_target(
     compiled_site_info_object,
     get_site_info_data(
-      compiled_nwis_data_object
+      compiled_nwis_data_object,
+      site_list
     )
   )
 )
