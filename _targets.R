@@ -79,24 +79,20 @@ p1_targets_list <- list(
     format = "file"
   ),
   tar_target(
-    compiled_nwis_data_csv,
+    compiled_nwis_data_object,
     bind_data(
-      "1_fetch/out/all_nwisdata.csv", # file outpath
       site_1_data_csv,
       site_2_data_csv,
       site_3_data_csv,
       site_4_data_csv
-      
-    ),
-  format = "file"
+    )
   ),
   tar_target(
-    compiled_site_info_csv,
+    compiled_site_info_object,
     get_site_info_data(
-      compiled_nwis_data_csv,
-      "1_fetch/out/all_siteinfo.csv" # file outpath
-    ),
-    format = "file"
+      compiled_nwis_data_object,
+      site_list
+    )
   )
 )
 
@@ -106,8 +102,8 @@ p2_targets_list <- list(
   tar_target(
     site_data_clean, 
     process_data(
-      compiled_nwis_data_csv,
-      compiled_site_info_csv
+      compiled_nwis_data_object,
+      compiled_site_info_object
     )
   )
 )

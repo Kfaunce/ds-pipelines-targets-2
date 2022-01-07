@@ -1,10 +1,7 @@
 process_data <- function(nwis_data, siteinfo_data){
   
   # Function to format data columns and merge data files
-  
-    nwis_data <- readr::read_csv(nwis_data)
-    siteinfo_data <- readr::read_csv(siteinfo_data)
-    
+
     # clean nwis data columns
     nwis_data_clean <- rename(nwis_data, water_temperature = X_00010_00000) %>% 
       select(-agency_cd, -X_00010_00000_cd, -tz_cd)
